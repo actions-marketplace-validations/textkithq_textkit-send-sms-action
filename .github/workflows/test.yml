@@ -1,0 +1,39 @@
+name: Test
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # A bad key must fail the step with the API's error message.
+  rejects-bad-key:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: sms
+        continue-on-error: true
+        uses: ./
+        with:
+          api-key: ssms_sk_test_invalid
+          to: '+15005550006'
+          body: 'test'
+      - name: Step must have failed
+        if: steps.sms.outcome != 'failure'
+        run: exit 1
+
+  # Real sandbox send; runs only when the repo has a TEXTKIT_TEST_API_KEY secret.
+  sends-with-test-key:
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEY: ${{ secrets.TEXTKIT_TEST_API_KEY != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: sms
+        if: env.HAS_KEY == 'true'
+        uses: ./
+        with:
+          api-key: ${{ secrets.TEXTKIT_TEST_API_KEY }}
+          to: '+15005550006'
+          body: 'Test from ${{ github.repository }} run ${{ github.run_id }}'
+      - if: env.HAS_KEY == 'true'
+        run: test -n "${{ steps.sms.outputs.message-id }}" && echo "${{ steps.sms.outputs.status }}"

@@ -1,0 +1,32 @@
+name: Send SMS with TextKit
+description: Send a text message from a workflow with the TextKit SMS API. Outputs the message id and status.
+author: TextKit
+branding:
+  icon: message-square
+  color: blue
+inputs:
+  api-key:
+    description: TextKit API key (ssms_sk_...). Store it as a secret, e.g. secrets.TEXTKIT_API_KEY.
+    required: true
+  to:
+    description: Recipient phone number in E.164 format, e.g. +15551234567.
+    required: true
+  body:
+    description: Message text.
+    required: true
+  from:
+    description: Sending number in E.164 format. Optional when the key's account has exactly one sending number.
+    required: false
+    default: ''
+  base-url:
+    description: API base URL. Leave the default.
+    required: false
+    default: https://api.jointextkit.com/v1
+outputs:
+  message-id:
+    description: The id of the created message (msg_...).
+  status:
+    description: The message status at creation (queued, sent, delivered, failed or blocked).
+runs:
+  using: node24
+  main: index.js
