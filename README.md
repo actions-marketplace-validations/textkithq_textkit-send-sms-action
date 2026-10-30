@@ -1,12 +1,12 @@
 # Send SMS with TextKit
 
-A GitHub Action that sends a text message with the [TextKit](https://jointextkit.com) SMS API. Use it to text yourself when a deploy fails, a release ships, or a scheduled job breaks.
+A GitHub Action that sends a text message with the [TextKit](https://jointextkit.com?ref=gh-send-sms-action) SMS API. Use it to text yourself when a deploy fails, a release ships, or a scheduled job breaks.
 
 No dependencies and no build step: one `fetch` to `POST https://api.jointextkit.com/v1/messages`.
 
 ## Usage
 
-1. Get an API key at [jointextkit.com/console](https://jointextkit.com/console). Test keys (`ssms_sk_test_...`) work right away against the sandbox.
+1. Get an API key at [jointextkit.com/console](https://jointextkit.com/console?ref=gh-send-sms-action). Test keys (`ssms_sk_test_...`) work right away against the sandbox.
 2. Add it to the repo as a secret named `TEXTKIT_API_KEY` (Settings → Secrets and variables → Actions).
 3. Add a step:
 
@@ -83,7 +83,7 @@ The step fails on any non-2xx response and prints the API's error code and messa
 HTTP 401 (invalid_api_key): Missing or malformed API key. Pass it as: Authorization: Bearer ssms_sk_...
 ```
 
-It also fails when the message comes back `failed` or `blocked` (for example, the recipient opted out). Error codes are listed in the [API reference](https://jointextkit.com/docs).
+It also fails when the message comes back `failed` or `blocked` (for example, the recipient opted out). Error codes are listed in the [API reference](https://jointextkit.com/docs?ref=gh-send-sms-action).
 
 ## License
 
